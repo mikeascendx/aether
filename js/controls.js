@@ -94,6 +94,7 @@ function flash(msg) {
 function toggleConsole() {
   const open = document.body.classList.toggle("console-open");
   el.consoleToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  el.consoleToggle.textContent = open ? "close" : "controls";
 }
 
 // ---- listeners ----

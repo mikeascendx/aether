@@ -15,12 +15,13 @@ body{
   -webkit-font-smoothing:antialiased;
   position:relative;
   transition:opacity .4s ease;
+  overscroll-behavior:none;
 }
 
 /* ---- the field ---- */
 #field{
   position:fixed; inset:0; z-index:0; display:block;
-  cursor:crosshair;
+  cursor:crosshair; touch-action:none;
 }
 
 /* ---- atmosphere ---- */
@@ -195,10 +196,53 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 3px rgba(255,
   *{transition-duration:.01ms !important;}
 }
 
-@media (max-width:760px){
-  .mark{top:26px; left:26px; max-width:70vw;}
+/* ---- touch devices: larger hit targets at any width ---- */
+@media (pointer:coarse){
+  input[type=range]{height:36px;}
+  input[type=range]::-webkit-slider-thumb{width:16px; height:28px; margin-top:-13px; border-radius:3px;}
+  input[type=range]::-moz-range-thumb{width:16px; height:28px; border-radius:3px;}
+  .btn{padding:13px 18px;}
+  .swatch{width:52px; height:30px;}
+}
+
+/* ---- tablet ---- */
+@media (max-width:1024px){
+  .mark{top:30px; left:30px; max-width:58vw;}
+  .telemetry{top:30px; right:30px;}
+  .console{width:calc(100vw - 40px); padding:16px 18px 14px;}
+  .console__grid{grid-template-columns:repeat(3,1fr); gap:18px 22px;}
+}
+
+/* ---- phone: console becomes a collapsible bottom sheet ---- */
+@media (max-width:600px){
   .telemetry{display:none;}
-  .console__grid{grid-template-columns:repeat(2,1fr);}
-  .hint{display:none;}
   .corner{display:none;}
+  .hint{display:none;}
+  .mark{top:22px; left:22px; max-width:82vw;}
+
+  .console-toggle{
+    display:inline-block; bottom:calc(20px + env(safe-area-inset-bottom)); right:20px;
+    font-family:var(--mono); font-size:10px; font-weight:600;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--bg);
+    background:var(--ink); border:none; border-radius:999px;
+    padding:13px 22px; cursor:pointer; z-index:11;
+    box-shadow:0 8px 24px rgba(0,0,0,.5);
+  }
+  .console-toggle:focus-visible{outline:none; box-shadow:0 0 0 3px var(--accent), 0 8px 24px rgba(0,0,0,.5);}
+
+  .console{
+    left:0; right:0; bottom:0; width:100%;
+    transform:translateY(112%);
+    border-radius:16px 16px 0 0;
+    padding:20px 18px calc(20px + env(safe-area-inset-bottom));
+    max-height:80vh; overflow-y:auto;
+    animation:none;
+    transition:transform .34s cubic-bezier(.16,1,.3,1);
+  }
+  body.console-open .console{transform:translateY(0);}
+
+  .console__grid{grid-template-columns:repeat(2,1fr); gap:16px 18px;}
+  .console__row--actions{gap:10px;}
+  .console__row--actions .btn{flex:1 1 calc(50% - 5px); text-align:center;}
+  .btn--mode{margin-right:0;}
 }
