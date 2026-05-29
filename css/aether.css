@@ -105,6 +105,7 @@ body.ui-hidden .ui{opacity:0; pointer-events:none;}
   overflow:hidden; transition:transform .18s ease, border-color .18s ease;
 }
 .swatch:hover{transform:translateY(-2px);}
+.swatch:focus-visible{outline:none; border-color:var(--ink); box-shadow:0 0 0 2px var(--accent);}
 .swatch[data-active="1"]{border-color:var(--ink); box-shadow:0 0 0 1px var(--ink), 0 0 16px -2px var(--accent);}
 .swatch::after{
   content:attr(data-name); position:absolute; left:0; right:0; bottom:-15px;
@@ -139,6 +140,9 @@ input[type=range]::-moz-range-thumb{
   box-shadow:0 0 12px -1px var(--accent);
 }
 input[type=range]:hover::-webkit-slider-thumb{transform:scaleY(1.18);}
+input[type=range]:focus-visible{outline:none;}
+input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px rgba(255,255,255,.18), 0 0 12px -1px var(--accent);}
+input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 3px rgba(255,255,255,.18), 0 0 12px -1px var(--accent);}
 
 .console__row--actions{flex-wrap:wrap; gap:9px;}
 .btn{
@@ -148,7 +152,9 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scaleY(1.18);}
   border:1px solid rgba(255,255,255,.16); border-radius:3px;
   padding:9px 16px; cursor:pointer; transition:all .16s ease;
 }
-.btn:hover{color:var(--ink); border-color:rgba(255,255,255,.5); background:rgba(255,255,255,.05);}
+.btn:hover{color:var(--ink); border-color:rgba(255,255,255,.5); background:rgba(255,255,255,.05); transform:translateY(-1px);}
+.btn:active{transform:translateY(0);}
+.btn:focus-visible{outline:none; color:var(--ink); border-color:var(--ink); box-shadow:0 0 0 2px var(--accent);}
 .btn--mode{margin-right:auto; min-width:104px;}
 .btn--mode::before{
   content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
@@ -182,6 +188,12 @@ input[type=range]:hover::-webkit-slider-thumb{transform:scaleY(1.18);}
 .telemetry{animation-name:rise;}
 .console{transform:translateX(-50%);}
 @keyframes blink{0%,100%{opacity:1;} 50%{opacity:.25;}}
+
+@media (prefers-reduced-motion:reduce){
+  .mark,.telemetry,.console,.hint{animation:none;}
+  .tel__pulse i{animation:none;}
+  *{transition-duration:.01ms !important;}
+}
 
 @media (max-width:760px){
   .mark{top:26px; left:26px; max-width:70vw;}
