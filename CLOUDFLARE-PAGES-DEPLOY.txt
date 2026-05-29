@@ -1,0 +1,121 @@
+==============================================================================
+ AETHER — DEPLOYING TO CLOUDFLARE PAGES (via GitHub)
+==============================================================================
+
+Aether is a static site: plain HTML, CSS, and native ES modules. There is NO
+build step. Cloudflare Pages serves the repo's files directly. Connecting the
+GitHub repo means every push to "main" automatically deploys, so the live site
+tracks your progress.
+
+Repo: https://github.com/mikeascendx/aether
+
+------------------------------------------------------------------------------
+ ONE-TIME SETUP (connect GitHub -> Cloudflare Pages)
+------------------------------------------------------------------------------
+
+1. Create a Cloudflare account (free) and log in:
+   https://dash.cloudflare.com
+
+2. In the left sidebar, open:  Workers & Pages
+
+3. Click:  Create  ->  Pages tab  ->  Connect to Git
+
+4. Authorize Cloudflare to access GitHub when prompted.
+   - Grant access to the "mikeascendx/aether" repository
+     (you can limit access to just this one repo).
+
+5. Select the repository:  mikeascendx/aether
+   Click  Begin setup.
+
+6. Configure the build settings:
+
+       Project name .............. aether        (becomes aether.pages.dev)
+       Production branch ......... main
+       Framework preset .......... None
+       Build command ............. (LEAVE EMPTY)
+       Build output directory .... /             (root - index.html lives here)
+       Root directory ............ (leave as default / blank)
+
+   There is no build because the site is already static. Leaving the build
+   command empty and the output directory at "/" tells Pages to publish the
+   repository files as-is.
+
+7. Click  Save and Deploy.
+
+8. Wait for the first deploy to finish (usually under a minute). Cloudflare
+   gives you a live URL:
+
+       https://aether.pages.dev
+
+   Open it to confirm the field renders and the controls work.
+
+------------------------------------------------------------------------------
+ ONGOING — AUTOMATIC DEPLOYS
+------------------------------------------------------------------------------
+
+After setup, you do not touch the dashboard again:
+
+   - Every push to "main"   -> a new PRODUCTION deploy at aether.pages.dev
+   - Every push to a branch -> a PREVIEW deploy at a unique URL
+   - Every pull request      -> a preview URL posted on the PR
+
+Typical workflow:
+
+       git add -A
+       git commit -m "tweak: brighter ember palette"
+       git push origin main
+
+   ...and the live site updates on its own a few seconds later. The Pages
+   dashboard ("Deployments" tab) shows the history - a running timeline of
+   every change.
+
+------------------------------------------------------------------------------
+ OPTIONAL — CUSTOM DOMAIN
+------------------------------------------------------------------------------
+
+1. In the Pages project:  Custom domains  ->  Set up a custom domain
+2. Enter your domain (e.g. aether.yourdomain.com).
+3. If the domain is on Cloudflare, the DNS record is added automatically.
+   If it is elsewhere, add the CNAME record Cloudflare shows you.
+4. HTTPS certificates are issued automatically.
+
+------------------------------------------------------------------------------
+ TROUBLESHOOTING
+------------------------------------------------------------------------------
+
+* Blank page / modules fail to load:
+  The site uses <script type="module">. Modules MUST be served over HTTP(S)
+  with the correct MIME type. Cloudflare Pages serves .js as text/javascript
+  by default, so this works in production. It only breaks if you open the
+  file directly from disk (file://) - that is a local-dev issue, not a Pages
+  issue. See README.md for the local static-server command.
+
+* 404 on the site root:
+  Confirm "Build output directory" is "/" and that index.html is at the repo
+  root (not inside a subfolder).
+
+* Fonts not loading:
+  Fonts come from Google Fonts over HTTPS. No action needed. (Self-hosting the
+  fonts is a possible future improvement, not required.)
+
+* Old version still showing:
+  Hard-refresh (Ctrl+F5 / Cmd+Shift+R). Cloudflare may also need a few seconds
+  to propagate the new deploy; check the "Deployments" tab for build status.
+
+* Wrong files deployed:
+  Make sure the change was committed AND pushed to "main". Check:
+      git status
+      git log --oneline -5
+
+------------------------------------------------------------------------------
+ SUMMARY
+------------------------------------------------------------------------------
+
+   Framework preset ..... None
+   Build command ........ (empty)
+   Output directory ..... /
+   Production branch ..... main
+   Live URL ............. https://aether.pages.dev
+
+   Push to main = deploy. That's the whole loop.
+==============================================================================
