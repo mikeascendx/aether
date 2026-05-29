@@ -1,7 +1,7 @@
 ---
 title: "refactor: Split aether.html into modular static structure, polish UI, mobile-optimize, and ship Cloudflare Pages deploy guide"
 type: refactor
-status: active
+status: completed
 date: 2026-05-29
 depth: standard
 repo: https://github.com/mikeascendx/aether
