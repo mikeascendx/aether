@@ -11,6 +11,9 @@ desktop.ini
 # Exports from the instrument
 aether-field*.png
 
+# Local-only deploy guide (not published)
+CLOUDFLARE-PAGES-DEPLOY.txt
+
 # Logs / deps (none yet, but guard against accidental commits)
 node_modules/
 *.log

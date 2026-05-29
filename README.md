@@ -50,10 +50,4 @@ js/
   field.js              canvas, particle simulation, render loop, PNG export
   controls.js           DOM wiring: sliders, swatches, buttons, keys, toast
   main.js               boot + render loop
-CLOUDFLARE-PAGES-DEPLOY.txt   deployment guide
 ```
-
-## Deploy
-
-Hosted on Cloudflare Pages via GitHub — every push to `main` auto-deploys. See
-[`CLOUDFLARE-PAGES-DEPLOY.txt`](CLOUDFLARE-PAGES-DEPLOY.txt) for setup.
