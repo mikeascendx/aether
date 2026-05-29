@@ -1,0 +1,16 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Exports from the instrument
+aether-field*.png
+
+# Logs / deps (none yet, but guard against accidental commits)
+node_modules/
+*.log
