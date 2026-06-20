@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#05060b">
+<meta name="description" content="aether — a generative curl-noise flow field you shape, perform, and share in real time.">
 <title>aether · vector field instrument</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,58 +24,78 @@
   <header class="mark ui">
     <div class="mark__no">N°01 / vector field instrument</div>
     <h1 class="mark__title">aether</h1>
-    <div class="mark__sub">a generative flow field you shape in real time</div>
+    <div class="mark__sub">a generative flow field you shape, perform, and share in real time</div>
   </header>
 
   <div class="telemetry ui">
-    <div class="tel__line"><span>particles</span><b id="t-count">900</b></div>
+    <div class="tel__line"><span>particles</span><b id="t-count">1100</b></div>
     <div class="tel__line"><span>frame rate</span><b id="t-fps">60</b></div>
     <div class="tel__line"><span>field mode</span><b id="t-mode">attract</b></div>
+    <div class="tel__line"><span>symmetry</span><b id="t-sym">off</b></div>
     <div class="tel__pulse"><i></i>live</div>
   </div>
 
   <button id="console-toggle" class="console-toggle ui" aria-expanded="true" aria-controls="console">controls</button>
 
   <section id="console" class="console ui">
-    <div class="console__row console__row--palettes">
-      <span class="lbl">palette</span>
-      <div id="swatches" class="swatches"></div>
+    <div class="console__row console__row--top">
+      <div class="grp grp--palettes">
+        <span class="lbl">palette</span>
+        <div id="swatches" class="swatches"></div>
+      </div>
+      <div class="grp grp--sym">
+        <span class="lbl">symmetry</span>
+        <div id="symmetry" class="seg" role="group" aria-label="symmetry"></div>
+      </div>
+    </div>
+
+    <div class="console__row console__row--presets">
+      <span class="lbl">presets</span>
+      <div id="presets" class="presets"></div>
     </div>
 
     <div class="console__grid">
       <div class="ctrl">
-        <div class="ctrl__top"><span class="lbl">particles</span><span class="val" id="v-count">900</span></div>
-        <input id="s-count" type="range" min="150" max="2400" step="10" value="900" aria-label="particles">
+        <div class="ctrl__top"><span class="lbl">particles</span><span class="val" id="v-count">1100</span></div>
+        <input id="s-count" type="range" min="150" max="2400" step="10" value="1100" aria-label="particles">
       </div>
       <div class="ctrl">
-        <div class="ctrl__top"><span class="lbl">flow scale</span><span class="val" id="v-flow">14</span></div>
-        <input id="s-flow" type="range" min="6" max="40" step="1" value="14" aria-label="flow scale">
+        <div class="ctrl__top"><span class="lbl">flow scale</span><span class="val" id="v-flow">12</span></div>
+        <input id="s-flow" type="range" min="6" max="40" step="1" value="12" aria-label="flow scale">
       </div>
       <div class="ctrl">
-        <div class="ctrl__top"><span class="lbl">velocity</span><span class="val" id="v-vel">1.2</span></div>
-        <input id="s-vel" type="range" min="2" max="30" step="1" value="12" aria-label="velocity">
+        <div class="ctrl__top"><span class="lbl">velocity</span><span class="val" id="v-vel">1.0</span></div>
+        <input id="s-vel" type="range" min="2" max="30" step="1" value="10" aria-label="velocity">
       </div>
       <div class="ctrl">
-        <div class="ctrl__top"><span class="lbl">persistence</span><span class="val" id="v-per">20</span></div>
-        <input id="s-per" type="range" min="1" max="30" step="1" value="20" aria-label="persistence">
+        <div class="ctrl__top"><span class="lbl">persistence</span><span class="val" id="v-per">22</span></div>
+        <input id="s-per" type="range" min="1" max="30" step="1" value="22" aria-label="persistence">
       </div>
       <div class="ctrl">
         <div class="ctrl__top"><span class="lbl">cursor force</span><span class="val" id="v-force">7</span></div>
         <input id="s-force" type="range" min="0" max="16" step="1" value="7" aria-label="cursor force">
       </div>
+      <div class="ctrl">
+        <div class="ctrl__top"><span class="lbl">turbulence</span><span class="val" id="v-turb">35</span></div>
+        <input id="s-turb" type="range" min="0" max="100" step="1" value="35" aria-label="turbulence">
+      </div>
     </div>
 
     <div class="console__row console__row--actions">
       <button id="b-mode" class="btn btn--mode">attract</button>
-      <button id="b-pause" class="btn">pause</button>
+      <button id="b-pause" class="btn" aria-pressed="false">pause</button>
       <button id="b-clear" class="btn">clear</button>
       <button id="b-random" class="btn">randomize</button>
+      <button id="b-share" class="btn">share</button>
+      <button id="b-fs" class="btn">fullscreen</button>
+      <button id="b-audio" class="btn btn--toggle" data-on="0" aria-pressed="false">audio</button>
+      <button id="b-tilt" class="btn btn--toggle" data-on="0" aria-pressed="false">tilt</button>
       <button id="b-export" class="btn btn--accent">export png</button>
     </div>
   </section>
 
-  <div class="hint ui">move cursor to disturb the field <span class="hint__sep">·</span> click to flip attract / repel <span class="hint__sep">·</span> keys [space] pause [r] randomize [c] clear [e] export [h] hide ui</div>
-  <div id="toast" class="toast">image saved</div>
+  <div class="hint ui">drag to disturb <span class="hint__sep">·</span> tap to cycle attract / repel / vortex <span class="hint__sep">·</span> keys [space] pause [r] randomize [s] share [e] export [f] fullscreen [h] hide ui</div>
+  <div id="toast" class="toast" role="status" aria-live="polite">image saved</div>
 
   <script type="module" src="js/main.js"></script>
 </body>
