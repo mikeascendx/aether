@@ -69,3 +69,7 @@ js/
   controls.js           DOM wiring: sliders, swatches, presets, pointers, keys, share
   main.js               boot + render loop
 ```
+
+## License
+
+[MIT](LICENSE) © John Mike Asuncion
