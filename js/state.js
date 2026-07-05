@@ -19,8 +19,16 @@ export const state = {
   lastInputAt: -1e9,         // ms of last real input; drives idle auto-drift
   audio: { enabled: false, level: 0 },
   tilt:  { enabled: false, x: 0, y: 0 },
-  perf:  { scale: 1, active: 1100 }   // adaptive particle budget (FPS-targeted)
+  perf:  { scale: 1, active: 1100 },  // adaptive particle budget (FPS-targeted)
+  reducedMotion: false   // calm mode: prefers-reduced-motion
 };
+
+// ---- calm mode: gentle defaults on a fresh load; a shared link's decode() (called
+// after this) still wins, so links always reproduce their exact field either way ----
+const motionMQ = typeof matchMedia === "function" ? matchMedia("(prefers-reduced-motion: reduce)") : null;
+state.reducedMotion = !!(motionMQ && motionMQ.matches);
+if (state.reducedMotion) Object.assign(state.raw, { count: 550, velocity: 6, turbulence: 14, persistence: 27 });
+if (motionMQ) motionMQ.addEventListener("change", e => { state.reducedMotion = e.matches; });
 
 export function recompute() {
   const s = state.raw;

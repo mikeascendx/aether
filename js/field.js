@@ -88,8 +88,9 @@ function sampleAudio() {
 // ---- idle auto-drift: a ghost cursor wanders when nobody is touching ----
 const ghost = { x: 0, y: 0 };
 function ghostAt(t) {
-  ghost.x = W * 0.5 + Math.cos(t * 0.7) * W * 0.32 + Math.cos(t * 1.9 + 1.3) * W * 0.12;
-  ghost.y = H * 0.5 + Math.sin(t * 0.9) * H * 0.30 + Math.sin(t * 1.5 + 0.7) * H * 0.10;
+  const amp = state.reducedMotion ? 0.55 : 1, spd = state.reducedMotion ? 0.5 : 1;   // calm mode: slower, smaller wander
+  ghost.x = W * 0.5 + Math.cos(t * 0.7 * spd) * W * 0.32 * amp + Math.cos(t * 1.9 * spd + 1.3) * W * 0.12 * amp;
+  ghost.y = H * 0.5 + Math.sin(t * 0.9 * spd) * H * 0.30 * amp + Math.sin(t * 1.5 * spd + 0.7) * H * 0.10 * amp;
   return ghost;
 }
 
@@ -130,7 +131,7 @@ function frame(now) {
   if (state.paused) return;
 
   if (state.audio.enabled) sampleAudio();
-  const energy = 1 + state.audio.level * 1.6;
+  const energy = 1 + state.audio.level * (state.reducedMotion ? 0.6 : 1.6);   // calm mode: no sudden audio spikes
 
   const d = state.derived;
   ctx.globalCompositeOperation = "source-over";
@@ -208,6 +209,20 @@ function frame(now) {
 export function startLoop() {
   raf = requestAnimationFrame(frame);
 }
+
+// ---- battery: fully stop the rAF loop when the tab is hidden, resume on return.
+// tracked separately from state.paused (space bar / pause button) so a user-paused
+// field stays paused after the tab comes back ----
+let hiddenPaused = false;
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    if (raf) { cancelAnimationFrame(raf); raf = null; hiddenPaused = true; }
+  } else if (hiddenPaused) {
+    hiddenPaused = false;
+    last = performance.now();   // avoid a huge delta on resume
+    raf = requestAnimationFrame(frame);
+  }
+});
 
 export function exportCanvas() {
   const name = "aether-" + state.palette.name + "-" + state.seed + ".png";
