@@ -73,3 +73,9 @@ js/
 ## License
 
 [MIT](LICENSE) © John Mike Asuncion
+
+## Support
+
+If this project helped or delighted you, you can leave a tip. It keeps the experiments going.
+
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/mikeascendx)
