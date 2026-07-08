@@ -78,4 +78,6 @@ js/
 
 If this project helped or delighted you, you can leave a tip. It keeps the experiments going.
 
-[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/mikeascendx)
+<p align="center">
+  <a href="https://ko-fi.com/mikeascendx"><img src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy me a coffee at ko-fi.com" height="42"></a>
+</p>
